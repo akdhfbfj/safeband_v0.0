@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SafeBand 신고 페이지</title>
+  <script>
+    // 위치 정보 자동 수집
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+      } else {
+        document.getElementById("location").value = "이 브라우저는 위치 정보를 지원하지 않습니다.";
+      }
+    }
+
+    function showPosition(position) {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      document.getElementById("location").value = `위도: ${lat}, 경도: ${lon}`;
+    }
+
+    function showError(error) {
+      switch(error.code) {
+        case error.PERMISSION_DENIED:
+          alert("위치 정보 사용이 거부되었습니다.");
+          break;
+        case error.POSITION_UNAVAILABLE:
+          alert("위치 정보를 사용할 수 없습니다.");
+          break;
+        case error.TIMEOUT:
+          alert("요청 시간이 초과되었습니다.");
+          break;
+        case error.UNKNOWN_ERROR:
+          alert("알 수 없는 오류가 발생했습니다.");
+          break;
+      }
+    }
+
+    window.onload = getLocation;
+  </script>
+</head>
+<body>
+  <h1>SafeBand 실종 신고</h1>
+  <p>아이를 발견하신 분께서는 아래 정보를 입력해 주세요.</p>
+  <form action="https://example.com/submit" method="POST">
+    <label for="childName">아이 이름 또는 코드:</label><br>
+    <input type="text" id="childName" name="childName"><br><br>
+
+    <label for="location">현재 위치 (자동 입력):</label><br>
+    <input type="text" id="location" name="location" readonly><br><br>
+
+    <label for="status">아이 상태:</label><br>
+    <select id="status" name="status">
+      <option value="혼자 있음">혼자 있음</option>
+      <option value="울고 있음">울고 있음</option>
+      <option value="도움을 요청함">도움을 요청함</option>
+      <option value="기타">기타</option>
+    </select><br><br>
+
+    <label for="contact">연락 가능한 전화번호 (선택):</label><br>
+    <input type="tel" id="contact" name="contact"><br><br>
+
+    <input type="submit" value="신고하기">
+  </form>
+</body>
+</html>
